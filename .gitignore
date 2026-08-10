@@ -4,6 +4,8 @@ __pycache__
 .env.prod
 .env.test
 docker-compose.override.yaml
+scripts/antoc_voice.env
+scripts/.antoc_recording_backfill.json
 
 # Conductor personal/per-machine overrides (settings.toml IS committed)
 .conductor/settings.local.toml
