@@ -44,7 +44,7 @@ SARVAM_VOICE = "anushka"
 SARVAM_TTS_MODEL = "bulbul:v2"
 SARVAM_STT_MODEL = "saarika:v2.5"
 SARVAM_LANG = "hi-IN"
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-3.5-flash"
 
 
 def load_secret_from_antoc(name: str) -> str:

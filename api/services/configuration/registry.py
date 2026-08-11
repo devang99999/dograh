@@ -383,7 +383,7 @@ OPENROUTER_MODELS = [
     "openai/gpt-4.1",
     "openai/gpt-4.1-mini",
     "anthropic/claude-sonnet-4",
-    "google/gemini-2.5-flash",
+    "google/gemini-3.5-flash",
     "meta-llama/llama-3.3-70b-instruct",
     "deepseek/deepseek-chat-v3-0324",
 ]

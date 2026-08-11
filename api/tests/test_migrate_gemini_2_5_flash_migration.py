@@ -1,4 +1,4 @@
-"""Tests for the b41f7c9d2e05 gemini-2.5-flash migration's model walker.
+"""Tests for the b41f7c9d2e05 gemini-3.5-flash migration's model walker.
 
 The walker runs over three different stored shapes (org/user v1, workflow v2
 override, legacy model_overrides), so these tests pin the shapes it must handle
@@ -31,7 +31,7 @@ def _migrate(payload):
 def test_legacy_v1_user_configuration_llm_is_migrated():
     payload, changed = _migrate(
         {
-            "llm": {"provider": "google", "model": "gemini-2.5-flash", "api_key": "k"},
+            "llm": {"provider": "google", "model": "gemini-3.5-flash", "api_key": "k"},
             "stt": {"provider": "dograh", "model": "default"},
             "tts": {"provider": "dograh", "model": "default", "voice": "default"},
         }
@@ -58,7 +58,7 @@ def test_workflow_v2_override_pipeline_and_realtime_are_migrated():
                         },
                         "llm": {
                             "provider": "google",
-                            "model": "gemini-2.5-flash-lite",
+                            "model": "gemini-3.5-flash-lite",
                         },
                     },
                 },
@@ -76,7 +76,7 @@ def test_legacy_model_overrides_block_is_migrated():
     payload, changed = _migrate(
         {
             "model_overrides": {
-                "llm": {"model": "gemini-2.5-flash", "provider": "google"}
+                "llm": {"model": "gemini-3.5-flash", "provider": "google"}
             }
         }
     )
@@ -89,7 +89,7 @@ def test_google_vertex_is_migrated():
         {
             "llm": {
                 "provider": "google_vertex",
-                "model": "gemini-2.5-flash",
+                "model": "gemini-3.5-flash",
                 "project_id": "p",
             }
         }
@@ -100,18 +100,18 @@ def test_google_vertex_is_migrated():
 
 def test_openrouter_slug_is_left_alone():
     payload, changed = _migrate(
-        {"llm": {"provider": "openrouter", "model": "google/gemini-2.5-flash"}}
+        {"llm": {"provider": "openrouter", "model": "google/gemini-3.5-flash"}}
     )
     assert changed is False
-    assert payload["llm"]["model"] == "google/gemini-2.5-flash"
+    assert payload["llm"]["model"] == "google/gemini-3.5-flash"
 
 
 def test_non_google_provider_with_same_model_id_is_left_alone():
     payload, changed = _migrate(
-        {"llm": {"provider": "speaches", "model": "gemini-2.5-flash"}}
+        {"llm": {"provider": "speaches", "model": "gemini-3.5-flash"}}
     )
     assert changed is False
-    assert payload["llm"]["model"] == "gemini-2.5-flash"
+    assert payload["llm"]["model"] == "gemini-3.5-flash"
 
 
 def test_native_audio_and_live_variants_are_left_alone():
@@ -119,7 +119,7 @@ def test_native_audio_and_live_variants_are_left_alone():
         {
             "realtime": {
                 "provider": "google",
-                "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+                "model": "gemini-3.5-flash-native-audio-preview-12-2025",
             },
             "llm": {
                 "provider": "google_vertex",
@@ -139,7 +139,7 @@ def test_already_migrated_payload_reports_no_change():
 
 def test_walker_descends_through_lists():
     payload, changed = _migrate(
-        {"services": [{"provider": "google", "model": "gemini-2.5-flash"}]}
+        {"services": [{"provider": "google", "model": "gemini-3.5-flash"}]}
     )
     assert changed is True
     assert payload["services"][0]["model"] == "gemini-3.5-flash"

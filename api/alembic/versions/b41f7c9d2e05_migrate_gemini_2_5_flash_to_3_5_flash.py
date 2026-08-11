@@ -1,4 +1,4 @@
-"""migrate gemini-2.5-flash configurations to gemini-3.5-flash
+"""migrate gemini-3.5-flash configurations to gemini-3.5-flash
 
 Revision ID: b41f7c9d2e05
 Revises: 00b0201ad918
@@ -24,15 +24,15 @@ depends_on: Union[str, Sequence[str], None] = None
 # migration moves them onto the 3.5 equivalents.
 #
 # Only Google's own access paths are rewritten: `google` (AI Studio) and
-# `google_vertex`. OpenRouter's `google/gemini-2.5-flash` slug is a separate
+# `google_vertex`. OpenRouter's `google/gemini-3.5-flash` slug is a separate
 # access path that Google's gating does not cover, and it is left untouched.
 #
 # Run history (workflow_runs, workflow_run_text_sessions, webhook_deliveries)
 # records what actually executed and is deliberately not rewritten.
 
 _MODEL_MIGRATIONS = {
-    "gemini-2.5-flash": "gemini-3.5-flash",
-    "gemini-2.5-flash-lite": "gemini-3.5-flash-lite",
+    "gemini-3.5-flash": "gemini-3.5-flash",
+    "gemini-3.5-flash-lite": "gemini-3.5-flash-lite",
 }
 _MIGRATED_PROVIDERS = {"google", "google_vertex"}
 
@@ -81,7 +81,7 @@ def _rewrite_configurations(connection, mapping: dict[str, str]) -> None:
                     f"SELECT id, {column} AS payload FROM {table} "
                     f"WHERE {column}::text LIKE :needle ORDER BY id"
                 ),
-                {"needle": "%gemini-2.5-flash%"},
+                {"needle": "%gemini-3.5-flash%"},
             )
             .mappings()
             .all()
