@@ -3,7 +3,7 @@ from typing import Any, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from loguru import logger
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy.exc import IntegrityError
 
 from api.constants import (
@@ -1362,6 +1362,14 @@ class CampaignDefaultsResponse(BaseModel):
     last_campaign_settings: Optional[LastCampaignSettingsResponse] = None
 
 
+class ConcurrentCallLimitRequest(BaseModel):
+    value: int = Field(ge=1, le=100)
+
+
+class ConcurrentCallLimitResponse(BaseModel):
+    concurrent_call_limit: int
+
+
 @router.get("/campaign-defaults", response_model=CampaignDefaultsResponse)
 async def get_campaign_defaults(user: UserModel = Depends(get_user)):
     """Get campaign limits for the user's organization.
@@ -1446,3 +1454,26 @@ async def get_campaign_defaults(user: UserModel = Depends(get_user)):
         default_retry_config=RetryConfigResponse(**DEFAULT_CAMPAIGN_RETRY_CONFIG),
         last_campaign_settings=last_campaign_settings,
     )
+
+
+@router.put(
+    "/concurrent-call-limit",
+    response_model=ConcurrentCallLimitResponse,
+)
+async def set_concurrent_call_limit(
+    request: ConcurrentCallLimitRequest,
+    user: UserModel = Depends(get_user),
+):
+    """Raise or lower the org-wide concurrent PSTN/WebRTC call cap."""
+    if not user.selected_organization_id:
+        raise HTTPException(status_code=400, detail="No organization selected")
+
+    await db_client.upsert_configuration(
+        user.selected_organization_id,
+        OrganizationConfigurationKey.CONCURRENT_CALL_LIMIT.value,
+        {"value": request.value},
+    )
+    logger.info(
+        f"Org {user.selected_organization_id} concurrent_call_limit={request.value}"
+    )
+    return ConcurrentCallLimitResponse(concurrent_call_limit=request.value)

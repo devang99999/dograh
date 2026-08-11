@@ -2,6 +2,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
+from api.constants import DEFAULT_ORG_CONCURRENCY_LIMIT
 from api.services.call_concurrency import (
     CallConcurrencyLimitError,
     CallConcurrencyService,
@@ -32,16 +33,19 @@ async def test_acquire_org_slot_logs_post_acquire_count_and_limit():
 
     assert slot.organization_id == 199
     assert slot.slot_id == "slot-123"
-    assert slot.max_concurrent == 10
+    assert slot.max_concurrent == DEFAULT_ORG_CONCURRENCY_LIMIT
     assert slot.source == "test_source"
     mock_rate_limiter.try_acquire_concurrent_slot_details.assert_awaited_once_with(
-        199, 10, scope_key=None, scope_max_concurrent=None
+        199,
+        DEFAULT_ORG_CONCURRENCY_LIMIT,
+        scope_key=None,
+        scope_max_concurrent=None,
     )
     mock_logger.info.assert_called_once()
     log_message = mock_logger.info.call_args.args[0]
     assert "org 199" in log_message
     assert "source=test_source" in log_message
-    assert "active_calls=7/10" in log_message
+    assert f"active_calls=7/{DEFAULT_ORG_CONCURRENCY_LIMIT}" in log_message
     assert "slot_id=slot-123" in log_message
 
 
@@ -70,7 +74,7 @@ async def test_acquire_org_slot_logs_warning_when_limit_reached():
     log_message = mock_logger.warning.call_args.args[0]
     assert "Concurrent call limit reached for org 199" in log_message
     assert "source=test_source" in log_message
-    assert "active_calls=12/10" in log_message
+    assert f"active_calls=12/{DEFAULT_ORG_CONCURRENCY_LIMIT}" in log_message
 
 
 @pytest.mark.asyncio
@@ -116,7 +120,7 @@ async def test_acquire_org_slot_fires_usage_event_per_org_member_when_limit_reac
         assert kwargs["properties"]["organization_id"] == 199
         assert kwargs["properties"]["source"] == "webrtc"
         assert kwargs["properties"]["active_calls"] == 10
-        assert kwargs["properties"]["max_concurrent"] == 10
+        assert kwargs["properties"]["max_concurrent"] == DEFAULT_ORG_CONCURRENCY_LIMIT
         assert "scope_key" not in kwargs["properties"]
 
 
@@ -148,7 +152,10 @@ async def test_acquire_org_slot_passes_scope_to_rate_limiter():
 
     assert slot.scope_key == "campaign:42"
     mock_rate_limiter.try_acquire_concurrent_slot_details.assert_awaited_once_with(
-        199, 10, scope_key="campaign:42", scope_max_concurrent=3
+        199,
+        DEFAULT_ORG_CONCURRENCY_LIMIT,
+        scope_key="campaign:42",
+        scope_max_concurrent=3,
     )
     mock_rate_limiter.store_workflow_slot_mapping_if_absent.assert_awaited_once_with(
         501, 199, "slot-123", scope_key="campaign:42"

@@ -170,7 +170,7 @@ COUNTRY_CODES = {
 # Floor at 1 so a misconfigured env var (0 or negative) can't silently block
 # every call in the deployment.
 DEFAULT_ORG_CONCURRENCY_LIMIT = max(
-    1, int(os.getenv("DEFAULT_ORG_CONCURRENCY_LIMIT", "10"))
+    1, int(os.getenv("DEFAULT_ORG_CONCURRENCY_LIMIT", "25"))
 )
 DEFAULT_CAMPAIGN_RETRY_CONFIG = {
     "enabled": True,
