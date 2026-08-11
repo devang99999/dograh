@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Create Abhiraj — internal Antoc CRM cold-call sales agent.
+"""Create Neha — internal Antoc CRM cold-call sales agent.
 
-Sells Antoc AI CRM to real-estate brokers/builders (Gujarati script).
+Sells Antoc AI CRM to real-estate brokers/builders (Hindi).
 Does NOT modify inbound workflow 3 or outbound workflow 4.
 
 Wired to Antoc CRM business place_id=antoc_194e7e885e4679c1 so call-end
@@ -31,26 +31,26 @@ from seed_antoc_voice_tools import (  # noqa: E402
     require_env,
 )
 
-AGENT_NAME = "Abhiraj Antoc CRM Sales"
+AGENT_NAME = "Neha Antoc CRM Sales"
 # Antoc CRM company account — do not use VOICE_DEFAULT_PLACE_ID
 ANTOC_CRM_PLACE_ID = "antoc_194e7e885e4679c1"
 
-SARVAM_VOICE = "abhilash"  # male, matches Abhiraj
+SARVAM_VOICE = "anushka"  # female, matches Neha
 SARVAM_TTS_MODEL = "bulbul:v2"
 SARVAM_STT_MODEL = "saarika:v2.5"
-SARVAM_TTS_LANG = "gu-IN"
-SARVAM_STT_LANG = "unknown"  # Gujarati + English replies
+SARVAM_TTS_LANG = "hi-IN"
+SARVAM_STT_LANG = "unknown"  # Hindi + English replies
 GEMINI_MODEL = "gemini-2.5-flash"
 
 GREETING = (
-    "નમસ્તે, હું અભિરાજ બોલું છું, Antoc AI તરફથી. "
-    "અમે Ahmedabadની real estate CRM company છીએ. અત્યારે થોડો સમય છે?"
+    "नमस्ते, मैं नेहा बोल रही हूँ, Antoc AI की तरफ़ से. "
+    "हम Ahmedabad की real estate CRM company हैं. अभी थोड़ा समय है?"
 )
 
 GLOBAL_PROMPT = """
-You are Abhiraj at Antoc AI, Ahmedabad. Outbound cold call: sell Antoc AI CRM to brokers and builders.
+You are Neha at Antoc AI, Ahmedabad. Outbound cold call: sell Antoc AI CRM to brokers and builders.
 
-Say ONLY the next line, in Gujarati script. English only for: Antoc AI, CRM, WhatsApp, Facebook, 99acres, MagicBricks, Housing, Meta, Google, Demo.
+Say ONLY the next line, in Hindi (Devanagari). English only for: Antoc AI, CRM, WhatsApp, Facebook, 99acres, MagicBricks, Housing, Meta, Google, Demo.
 No English thinking. No prices. No tool names. Not a receptionist. Not a property-buyer call.
 
 If lead_name is set, use it. Never ask name or phone. One question. Max 2 short sentences.
@@ -59,49 +59,49 @@ Before goodbye call end_call_summary once: callback_requested (busy, with time),
 """.strip()
 
 START_PROMPT = """
-Greeting already played. Continue as Abhiraj. Speak ONLY Gujarati (Gujarati script). English words only for: Antoc AI, CRM, WhatsApp, Facebook, 99acres, MagicBricks, Housing, Meta, Google, Demo.
+Greeting already played. Continue as Neha. Speak ONLY Hindi (Devanagari). English words only for: Antoc AI, CRM, WhatsApp, Facebook, 99acres, MagicBricks, Housing, Meta, Google, Demo.
 Never say Antor. Never say tool names. Never invent price. One question. Max 2 short sentences.
 
 lead_name={{lead_name}}  If set, use Mr/Mrs that name. Never ask name or phone.
 Campaign notes (footnote only, do not replace this flow): {{outbound_script}}
 
 If they have time:
-"Antoc AI CRM real estate brokers અને builders માટે છે. Leads miss ન થાય, follow-up સાચું રહે — એ માટે."
+"Antoc AI CRM real estate brokers और builders के लिए है. ताके leads miss न हों और follow-up सही रहे."
 
 If busy:
-"કોઈ વાંધો નહીં. તમારા ફ્રી ટાઈમે હું ફરી કોલ કરું. કયા દિવસે અને કેટલા વાગ્યે સારું રહે?"
+"कोई बात नहीं. आपके फ्री टाइम पर मैं फिर से कॉल करूँगी. कौन सा दिन और कितने बजे ठीक रहेगा?"
 Save day+time, then end_call_summary.
 
 If not interested — do not hang up yet:
-"એક વાત કહેવા માંગું. જ્યારે તમારો lead આવે અને follow-up કે missed call રહી જાય, તો lead miss થઈ જાય — એવું થાય છે ને?"
-If they agree: "એ જ માટે અમે Antoc AI CRM આપીએ છીએ, તમારા businessના lead follow-up માટે." Then qualify.
-If still no: "ધન્યવાદ, ફેર ક્યારેક વાત કરીશું." end_call_summary.
+"एक बात कहना चाहूँगी. जब आपका lead आता है और follow-up या missed call रह जाती है, तो lead miss हो जाता है — ऐसा होता है ना?"
+If they agree: "इसी के लिए हम Antoc AI CRM देते हैं, आपके business के lead follow-up के लिए." Then qualify.
+If still no: "धन्यवाद, फिर कभी बात करेंगे." end_call_summary.
 
 If they already use a CRM:
-"સારું. હાલ તમે કયું CRM use કરો છો?"
-After they name it, say 2–3 points only: Antoc AI CRM brokers/builders માટે — બધા leads એક જગ્યાએ, WhatsApp automation, calling અને reports, property-project, mobile app, team tracking, 99acres MagicBricks Housing Meta Google.
+"अच्छा. अभी आप कौन सा CRM use करते हैं?"
+After they name it, say 2–3 points only: Antoc AI CRM brokers/builders के लिए है — सारे leads एक जगह, WhatsApp automation, calling और reports, property-project, mobile app, team tracking, 99acres MagicBricks Housing Meta Google.
 
 Then ask ONE at a time:
-પહેલા તમારા leads કઈ રીતે આવે છે?
-એને manage કેવી રીતે કરો છો?
-કયું CRM છે? (skip if already answered)
-તમારી under કેટલા sales agents છે?
-Facebook અને property portals પરથી leads લો છો?
-Follow-up manually ચાલે છે?
+पहले आपके leads कैसे आते हैं?
+उन्हें manage कैसे करते हैं?
+कौन सा CRM है? (skip if already answered)
+आपके under कितने sales agents हैं?
+Facebook और property portals से leads लेते हैं?
+Follow-up manually चलता है?
 
 If they want details:
-"બિલકુલ. WhatsApp પર મોકલી દઉં? પછી 10-15 મિનિટનું demo. કયો સમય સૂટ કરે?"
+"बिल्कुल. WhatsApp पर भेज दूँ? फिर 10-15 मिनट का demo. कौन सा समय सूट करेगा?"
 end_call_summary when demo time is set, or if WhatsApp-only with no time.
 
 Do not ask buy/rent/BHK/budget. Put CRM name, team size, lead source, demo time in summary.
 """.strip()
 
 END_PROMPT = (
-    "આભાર કહો ગુજરાતીમાં એક ટૂંકા વાક્યમાં અને કોલ પૂરો કરો."
+    "हिंदी में एक छोटे वाक्य में धन्यवाद कहो और कॉल खत्म करो."
 )
 
 
-def byok_gujarati_stack(*, gemini_key: str, sarvam_key: str) -> dict[str, Any]:
+def byok_hindi_stack(*, gemini_key: str, sarvam_key: str) -> dict[str, Any]:
     return {
         "version": 2,
         "mode": "byok",
@@ -216,7 +216,7 @@ def build_definition(
                         "duration_seconds": "{{cost_info.call_duration_seconds}}",
                         "recording_url": "{{recording_url}}",
                         "transcript_url": "{{transcript_url}}",
-                        "language": "gu",
+                        "language": "hi",
                         "workflow_run_id": "{{workflow_run_id}}",
                         "direction": "outgoing",
                         "placeId": ANTOC_CRM_PLACE_ID,
@@ -244,7 +244,7 @@ def build_definition(
 
 def voice_config(*, gemini_key: str, sarvam_key: str) -> dict[str, Any]:
     return {
-        "model_configuration_v2_override": byok_gujarati_stack(
+        "model_configuration_v2_override": byok_hindi_stack(
             gemini_key=gemini_key, sarvam_key=sarvam_key
         ),
         "smart_turn_stop_secs": 0.9,
