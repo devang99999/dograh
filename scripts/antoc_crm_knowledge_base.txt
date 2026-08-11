@@ -1,0 +1,589 @@
+# ANTOC AI CRM — DEEP KNOWLEDGE BASE v2
+# Complete product, flow, and conversation reference for the Neha sales agent.
+# Chunked retrieval — Neha queries this during calls for accurate answers.
+
+================================================================================
+SECTION 1 — WHAT IS ANTOC AI CRM?
+================================================================================
+
+Antoc AI CRM is a real-estate-specific CRM built in Ahmedabad, India. It is
+designed for real estate brokers, independent agents, developers, builder teams,
+and channel partners. It consolidates leads from portals, Meta, and Google into
+one dashboard, automates WhatsApp follow-ups, deploys an AI voice calling agent
+that qualifies leads within seconds of inquiry, and tracks every lead from first
+contact through deal closure.
+
+It is NOT a general-purpose CRM. It is built only for real estate — which means
+every field, every pipeline stage, every automation rule is designed for how
+real estate sales actually works in India.
+
+Headquarters: Ahmedabad, India.
+Target customers: Brokers (solo and teams), developers, builder sales teams,
+  channel partners (CPs), real estate co-working operators, property consultants.
+Language support in AI agent: Hindi, Hinglish, Gujarati, English.
+Data storage: India-only servers, compliant with Indian data laws.
+
+================================================================================
+SECTION 2 — CORE FEATURES (DEEP)
+================================================================================
+
+2.1 LEAD AGGREGATION — ALL SOURCES IN ONE PLACE
+-------------------------------------------------
+Sources that feed directly into Antoc with no manual work:
+  - 99acres (API-level integration, near-real-time)
+  - MagicBricks (API-level)
+  - Housing.com (API-level)
+  - NoBroker (webhook)
+  - Square Yards (webhook)
+  - PropTiger (webhook)
+  - Facebook / Meta Lead Ads (direct integration)
+  - Google Lead Ads (direct integration)
+  - Instagram DMs (via Meta Lead Ads)
+  - IVR / missed call campaigns (phone-based)
+  - WhatsApp incoming inquiry (auto-creates lead)
+  - Website / microsite contact form (auto-creates lead)
+  - Manual entry (walk-in, referral, call)
+  - CSV / Excel bulk import for migrating old data
+
+Every lead gets a timestamp, source tag, and immediate notification to the
+assigned agent. Nothing slips through. No tab-switching between portals.
+
+Deduplication: if the same phone number comes from two portals, Antoc merges
+into one lead profile automatically.
+
+2.2 AI VOICE CALLING AGENT — HOW IT WORKS
+-------------------------------------------
+When a new lead arrives (from any source), Antoc's AI agent calls the lead
+automatically. Default delay: 30 seconds after lead creation. Configurable
+to immediate or up to 24 hours.
+
+The AI agent call flow:
+  Step 1 — Greets lead by name ("Namaste Rahul ji, main Neha bol rahi hoon…")
+  Step 2 — Confirms the inquiry: project name, location
+  Step 3 — Qualifies: budget, timeline, intent (self-use vs investment),
+           BHK preference, family size
+  Step 4 — Answers basic project questions (reads from project KB)
+  Step 5 — Hot lead → connects to live agent or books site visit directly
+            Warm lead → schedules callback, sends WhatsApp with brochure
+            Cold / wrong number → marks disposition and logs
+
+After every call:
+  - Full call recording saved to lead profile
+  - Transcript (text) saved
+  - AI-generated summary: "Lead interested in 3BHK, budget 80L, site visit
+    preferred Saturday morning"
+  - Disposition tag: hot / warm / cold / not_interested / callback / wrong_number
+
+Human agent receives the lead with full context before they speak a single word.
+
+Retry logic: if the lead does not answer, the system retries up to 3 times over
+24 hours. After 3 unanswered calls, it sends a WhatsApp message instead.
+
+2.3 WHATSAPP AUTOMATION — FULL DETAIL
+---------------------------------------
+Antoc sends WhatsApp messages automatically based on triggers and timing rules.
+All messages go through the official WhatsApp Business API (Meta BSP — no
+grey-route, no ban risk).
+
+Trigger-based automations (fire once when event happens):
+  - New lead created → welcome message + brochure PDF
+  - Site visit booked → confirmation + Google Maps link
+  - Site visit tomorrow → reminder
+  - Deal won → congratulations + next steps
+  - Payment due → reminder
+  - Lead goes cold (no activity 7 days) → re-engagement message
+
+Time-based drip sequences:
+  - Day 0: Welcome + brochure
+  - Day 2: Project highlight (video or image)
+  - Day 5: Testimonial or case study
+  - Day 10: Limited availability / offer
+  - Day 21: "Aapko koi baat karni hai toh main available hoon"
+
+Bulk broadcast:
+  - Festival messages (Diwali, New Year, Navratri) to your full lead base
+  - New project launch announcement
+  - Price revision notice
+  - Offer / scheme announcement
+
+Messages are template-based. Templates are pre-approved by Meta. You can
+customise text, attach images, PDFs, and videos. No per-message cost above the
+BSP fee. Unsubscribe handling is automatic and compliant.
+
+2.4 LEAD PIPELINE — STAGES AND CUSTOMISATION
+----------------------------------------------
+Visual Kanban board. Every lead is a card. Drag to move between stages.
+
+Default pipeline stages:
+  New Lead → First Contact → Interested → Proposal Sent →
+  Site Visit Scheduled → Site Visit Done → Negotiation →
+  Deal Won → Deal Lost → On Hold
+
+You can rename stages, add stages, reorder, or remove. Each stage can have:
+  - Automatic WhatsApp message on entry
+  - Automatic task assignment ("Call within 2 hours")
+  - Colour coding
+  - SLA timer (if lead stays in stage >N hours, alert manager)
+
+AI agent updates the stage automatically based on disposition. Human agents
+can override anytime.
+
+Filter and search the pipeline by:
+  - Source (99acres, Meta, etc.)
+  - Agent assigned
+  - Project name
+  - Stage
+  - Date range
+  - Budget range
+  - Lead score (AI-assigned)
+
+2.5 LEAD SCORING
+-----------------
+Antoc's AI scores every lead 1–100 based on:
+  - Response speed (answered AI call vs ignored)
+  - Budget match (is budget realistic for the project?)
+  - Intent signals (site visit request = high score)
+  - Engagement (opened WhatsApp messages, replied)
+  - Source quality (referral > portal > bulk campaign)
+
+Hot leads (score 70+) trigger an immediate notification to the sales manager.
+Agents can sort their pipeline by score to prioritise.
+
+2.6 TEAM & AGENT MANAGEMENT
+-----------------------------
+  - Unlimited agent accounts on Growth and Enterprise plans
+  - Roles: Super Admin (full access), Manager (team view + reports), Agent
+    (own leads only), Channel Partner (CP portal, limited)
+  - Lead assignment: manual, round-robin, or skill-based routing
+  - Manager dashboard: real-time view — how many leads each agent has, how
+    many calls made today, follow-ups pending, deals in pipeline
+  - Inactivity alert: if an agent hasn't updated a lead in >24h, manager
+    gets notified
+  - Agent performance report: calls, site visits, deal conversion rate, revenue
+
+2.7 CHANNEL PARTNER (CP) MANAGEMENT
+--------------------------------------
+  - Add channel partners as separate accounts — CPs see only their leads
+  - Track which CP brought which lead (source attribution)
+  - CP commission calculation: set % or flat fee per project
+  - Deal attribution: if a CP's lead converts, deal is credited to that CP
+  - CP performance leaderboard: which CPs are active, which are dormant
+  - Automated brokerage payable report for accounts
+
+2.8 PROJECT & INVENTORY MANAGEMENT
+------------------------------------
+  - Unlimited projects
+  - Add floors, towers, unit types
+  - Each unit: unit number, floor, facing, area (carpet + built-up), price,
+    status (available / reserved / sold / under maintenance)
+  - Inventory grid: colour-coded map of the floor plan
+    Green = available, Yellow = reserved/on-hold, Red = sold
+  - Hold a unit against a lead (soft hold, configurable duration)
+  - Price escalation: update all unit prices in bulk by % or fixed amount
+  - Payment schedule: EMI / installment plan attached to each unit
+
+2.9 PROJECT MICROSITE
+----------------------
+Antoc auto-generates a mobile-optimised landing page per project.
+  - Project name, photos, floor plans, location map, amenities
+  - Contact form → new lead in Antoc instantly
+  - WhatsApp chat button embedded
+  - Virtual tour embed (YouTube/360 link)
+  - URL is shareable (WhatsApp, Instagram, portals, SMS)
+  - No developer, no CMS, no extra cost. Just fill in the details in Antoc.
+
+2.10 MOBILE APP — FIELD AGENT FOCUS
+-------------------------------------
+Android and iOS. Designed for agents on site.
+  - Full lead management on phone
+  - One-tap call from lead profile (logs call automatically)
+  - Voice note recording → saves to lead profile
+  - Photo upload from site visit → saved to lead
+  - Offline mode: works without internet, syncs when back online
+  - Push notifications: new lead, follow-up due, manager message
+  - Location check-in: agent marks site visit location
+  - App UI in Hindi option (coming soon)
+
+2.11 REPORTING & ANALYTICS
+----------------------------
+Standard reports (always available):
+  - Lead source performance: leads, site visits, deals, revenue by source
+  - Funnel report: conversion % at each stage
+  - Agent leaderboard: deals, revenue, call volume, follow-up rate
+  - Project inventory report: units available/sold/reserved per project
+  - Pipeline value: total deal value in pipeline by stage
+  - Daily / weekly / monthly summary email to manager
+
+Custom reports:
+  - Date range filtering
+  - Multi-project filter
+  - Export any report to Excel or PDF
+
+2.12 INTEGRATIONS
+------------------
+Built-in (no code):
+  - All major Indian portals (99acres, MagicBricks, Housing, NoBroker, etc.)
+  - WhatsApp Business API (BSP-backed)
+  - Facebook / Google Lead Ads
+  - IVR / missed call number
+
+API-based (for custom work):
+  - REST API access on Growth and Enterprise plans
+  - Webhooks: push lead events to any system in real time
+  - Zapier connector (3000+ apps)
+  - Tally accounting integration (beta, available for Enterprise)
+
+2.13 DATA SECURITY & COMPLIANCE
+---------------------------------
+  - Data stored on Indian servers only
+  - Role-based access: agents can't export full lead lists
+  - Activity log: every action is logged with user and timestamp (audit trail)
+  - GDPR/PDPA-aware: unsubscribe and data deletion supported
+  - WhatsApp via official BSP (Meta compliant, no ban risk)
+  - Regular backups (daily)
+
+================================================================================
+SECTION 3 — PRICING (POSITIONING ONLY — NEVER QUOTE INR ON CALL)
+================================================================================
+
+Pricing depends on: team size, number of projects, and whether AI calling is
+activated. There are three tiers:
+
+Starter: Solo broker or small team (2–4 people). Core CRM, portal integration,
+  WhatsApp basics. No AI calling.
+
+Growth: Teams of 5–25. Full WhatsApp automation, AI calling agent, lead scoring,
+  CP management, mobile app, reports. This is the most popular plan.
+
+Enterprise: Large developers, multi-branch offices. Unlimited users, dedicated
+  onboarding manager, SLA, white-label option, Tally integration, custom API.
+
+Pricing philosophy:
+  - Monthly billing available (no annual lock-in on monthly)
+  - Annual plan: ~20% cheaper
+  - Free trial: 14 days, all features, no credit card
+  - ROI framing: one saved deal per month more than covers any plan cost. A
+    single 2BHK deal in Ahmedabad is worth ₹30,000–₹1,50,000 in brokerage.
+    Antoc prevents the follow-up misses that lose those deals.
+
+IMPORTANT: Never say "yeh sasta hai" or quote ₹ numbers. Say "reasonable hai,
+team size par depend karta hai. Demo ke baad pricing detail mein baat karte hain."
+
+================================================================================
+SECTION 4 — ONBOARDING PROCESS (DETAILED)
+================================================================================
+
+Day 0 (same day of sign-up):
+  - Account created, admin login provided
+  - Portal connections initiated (99acres, MagicBricks, etc. — credentials needed
+    from the client)
+  - WhatsApp Business number linked (client's number + Meta BSP setup)
+
+Day 1:
+  - Portal data flowing in (live leads from this point)
+  - WhatsApp automation templates submitted to Meta for approval
+    (usually approved same day or next morning)
+  - AI calling agent configured with client's project name and script
+
+Day 2–3:
+  - Team members added, roles assigned
+  - WhatsApp templates live
+  - AI calling agent tested with real lead
+  - Mobile app installed on each agent's phone
+  - 30-min training call with Antoc team (screen share, Hindi)
+
+Day 4 and beyond:
+  - Live in production — all leads from portals flow in, AI agent calls them,
+    WhatsApp drip is running
+  - Antoc team reachable on WhatsApp for any question
+  - Optional: data migration from old CRM/spreadsheet (send the Excel, Antoc
+    team imports it)
+
+Time to go fully live: 3–4 days if client provides portal credentials promptly.
+  Can be same day for basic CRM without AI calling.
+
+2.15 WHAT THE CLIENT NEEDS TO PROVIDE:
+  - 99acres / MagicBricks API credentials (client already has this from the
+    portal — just a username/password or API key)
+  - WhatsApp Business number (can be their existing number)
+  - Project name, basic details, photos for the microsite
+  - Team member names and phone numbers for login setup
+
+================================================================================
+SECTION 5 — OBJECTION HANDLING — DEEP
+================================================================================
+
+"We use Excel and WhatsApp, it works fine"
+  "Bilkul, kaafi log aise karte hain. Par ek cheez notice ki hai — jab lead
+  aata hai aur 10-15 minute mein call nahi milta, toh chance 60-70% kam ho
+  jaata hai. Antoc mein lead aaya, 30 second mein AI ne call kar li, WhatsApp
+  bhi gaya. Agent ko sirf hot lead milte hain — already qualified. Excel se
+  yeh nahi hoga. Ek demo mein difference live dikhata hoon."
+
+"Mera data safe rahega?"
+  "Haan bilkul. Data India mein stored hai — Indian servers par. WhatsApp
+  official Meta BSP se hai, koi grey route nahi. Aur role-based access hai —
+  ek agent apni leads ke alawa kuch nahi dekh sakta. Audit trail bhi hai —
+  kaun ne kya kiya sab log rehta hai."
+
+"Agents phone par nahi hain, field mein ghoomte hain"
+  "Issi liye mobile app hai. Field mein site visit ke time app se lead update
+  kar sakte hain, photo kheech ke lead mein attach kar sakte hain, voice note
+  bol sakte hain. Offline bhi kaam karta hai, internet aane par sync ho jaata
+  hai. Aur AI calling agent already pehli call kar chuka hota hai — agent ko
+  tab milti hai lead jab woh already warm ho."
+
+"Kitne time mein setup ho jaata hai?"
+  "3–4 din mein fully live. Pehle din hi portals se leads aane lag jaate hain.
+  WhatsApp automation Day 2–3 mein. AI calling agent Day 2 tak test ho jaata
+  hai. Hum khud onboarding karte hain — aapko technical kuch nahi karna."
+
+"Kya portals ke saath actually integrate hota hai ya manually copy karna padta hai?"
+  "Nahi, manually nahi. 99acres, MagicBricks, Housing — sab ka API-level
+  integration hai. Lead aata hai portal par, 30 second mein Antoc mein aa
+  jaata hai automatically. Agent ko portal dashboard dekhne ki zarurat hi
+  nahi reh jaati."
+
+"Meri team ek hi WhatsApp group use karti hai, sab ko pata rehta hai"
+  "Group mein kaun follow up kiya, kaun nahi, yeh dhundna padta hai. 3 din
+  baad agar lead cold ho gaya toh group scroll karke dhundhna padega. Antoc
+  mein har lead ka apna page hai — saari history, calls, WhatsApp, notes ek
+  jagah. Aur follow-up reminder khud aa jaata hai — bhoolne ka chance hi
+  nahi."
+
+"Hum dono portals use karte hain aur duplicate leads kaafi aate hain"
+  "Antoc automatically deduplicate karta hai — agar same number do portals se
+  aaya toh ek lead banta hai, dono sources tagged hote hain. Duplicate pe do
+  baar call nahi jaata."
+
+"Kya AI agent Gujarati mein baat kar sakta hai?"
+  "Haan, Gujarati support hai. Agent Hinglish, Hindi, aur Gujarati mein baat
+  kar sakta hai. Aap jis language mein chahein configure kar sakte hain."
+
+"Hamare paas 2 log hi hain, kya yeh humko suit karega?"
+  "Bilkul. Starter plan 2–4 logon ke liye hai. Portal integration, basic
+  WhatsApp, aur pipeline management — sab hai. Jab team badhegi toh plan
+  upgrade hota hai, data kahin nahi jaata."
+
+"Kya AI agent galat cheez bol deta hai kabhi?"
+  "Agent project ki information se baat karta hai — jo aapne configure kiya
+  hai woh bolega. Bahut specific pricing ya technical jawab nahi deta — woh
+  human agent ke paas route karta hai. Aur har call ka transcript hota hai,
+  aap review kar sakte hain."
+
+"Ek baar demo scheduled ho gaya, phir kya hota hai?"
+  "Demo ke baad same week mein: pricing discuss karte hain, free trial
+  activate karte hain (14 din, koi credit card nahi), aur onboarding call
+  book karte hain. Trial mein aap sab features live dekh sakte hain apni
+  real leads ke saath."
+
+================================================================================
+SECTION 6 — CALL FLOW SWITCHING — WHEN THE CONVERSATION SHIFTS
+================================================================================
+
+SCENARIO A: Lead says "main broker nahi hoon, main developer hoon"
+  Switch to developer track:
+  "Oh, developer hain! Toh yeh toh aur relevant hai. Antoc mein developer ke
+  liye inventory management hai — floor-wise units, reservation grid, payment
+  schedule. Aur CP management bhi — kaun channel partner kitne leads la raha
+  hai, commission sab track hota hai. Aapka team kitna bada hai?"
+
+SCENARIO B: Mid-call — "actually main ek builder ke liye kaam karta hoon,
+  khud broker nahi hoon"
+  "Theek hai, toh aap un ke liye CRM dhundh rahe hain. Antoc builder aur
+  developer dono ke liye kaam karta hai — inventory, site visit tracking,
+  CP management sab hai. Main unse seedha baat karwaun ya aap mujhe batayen
+  kya chahiye?"
+
+SCENARIO C: "main apni existing CRM switch karna chahta hoon"
+  "Migration ki chinta mat karo. Purani CRM / Excel ka data hum import karte
+  hain — aapko sirf file bhejna hai. Saari lead history transfer ho jaati
+  hai. Kaunsi CRM se aa rahe hain currently?"
+
+SCENARIO D: Lead suddenly asks about pricing mid-pitch
+  Do not freeze. Pivot smoothly:
+  "Bilkul baat karte hain. Pricing team size aur features par depend karti
+  hai — ek fixed number abhi nahi bataunga kyunki aapke liye sahi plan
+  decide karna chahti hoon. Demo ke baad 10 minute mein exact figure bata
+  deti hoon. Demo mein hi dekhoge kya kya milta hai, phir decision easy
+  ho jaata hai."
+
+SCENARIO E: Lead asks "kya yeh sirf Ahmedabad ke liye hai?"
+  "Nahi, poore India mein hai. Mumbai, Pune, Delhi, Bangalore — sab jagah
+  clients hain. Portals bhi national hain. AI agent bhi Hindi aur Hinglish
+  mein hota hai jo kahin bhi kaam karta hai."
+
+SCENARIO F: Lead is a solo broker with no team
+  "Solo ke liye bhi perfectly kaam karta hai. Aap khud portal se leads le
+  rahe hain, AI agent khud call karta hai, WhatsApp khud jaata hai — aap
+  sirf warm leads handle karo. Team ho ya na ho, automation chal rahi hai."
+
+SCENARIO G: Lead says "I already use AI calling from another vendor"
+  "Interesting. Aur CRM usse linked hai? Kyunki kaafi log alag AI caller
+  aur alag CRM use karte hain — lead manually move karni padti hai beech
+  mein. Antoc mein AI calling aur CRM ek hi system hai — call hoti hai,
+  summary automatically lead profile mein aa jaati hai, WhatsApp bhi chal
+  jaata hai. Integrated hona ek bada difference hai."
+
+SCENARIO H: Lead asks about WhatsApp specifically (not CRM)
+  "WhatsApp automation Antoc ka strong point hai. Official BSP se hai —
+  koi ban risk nahi. Trigger-based aur time-based dono. Lead aate hi
+  welcome message, brochure, phir Day 2, Day 5, Day 10 pe automated follow-up.
+  Festivals par bulk broadcast bhi kar sakte hain. Sab template-based, Meta
+  approved. Alag WhatsApp tool lene ki zarurat hi nahi."
+
+SCENARIO I: Lead becomes interested in a specific feature mid-call
+  If they ask "WhatsApp automation ke baare mein aur batao":
+    Use retrieve_from_knowledge_base with query "WhatsApp automation features
+    detail" before answering. Convert to one natural Hinglish sentence.
+  If they ask about inventory:
+    Use retrieve_from_knowledge_base with query "inventory management units
+    floor plan grid" before answering.
+  Never read out a bullet list from the KB — synthesise into spoken Hinglish.
+
+SCENARIO J: Lead says "mujhe khud decide nahi karna, baat karo mere boss se"
+  "Bilkul, koi baat nahi. Main seedha unse baat kar sakti hoon — unka
+  number hai aapke paas? Ya main aapko WhatsApp par ek chhota note bhejti
+  hoon jo aap unhe forward kar saken — 2–3 line mein kya milta hai Antoc
+  mein. Woh decide karein phir demo book karein."
+
+SCENARIO K: Call is going long and the lead is getting distracted
+  Bring back softly:
+  "Main ek kaam karti hoon — ek 10-15 minute ka demo book karti hoon jab
+  aapke paas time ho. Usme sab live dikhata hoon. Aapko subah acha lagta
+  hai ya shaam?"
+
+SCENARIO L: Lead says they had a bad experience with a previous CRM
+  Listen first. Then:
+  "Samajh sakti hoon — kaafi CRMs promise karti hain par implementation
+  ka koi support nahi hota. Antoc mein onboarding hum khud karte hain —
+  ek dedicated call, step by step. Aur WhatsApp support group hai jisme
+  team seedha jawab deti hai. Trial mein khud try karo — agar feel nahi
+  aaya toh koi baat nahi."
+
+SCENARIO M: Lead already knows about Antoc and has a specific question
+  "Achha! Toh aap already jaante hain. Kya specific question hai?" Then
+  use retrieve_from_knowledge_base if it's a product-detail question.
+
+================================================================================
+SECTION 7 — CUSTOMER PERSONAS AND WHAT THEY CARE ABOUT
+================================================================================
+
+BROKER — INDIVIDUAL (solo agent, 1–5 years experience)
+  Pain: Too many leads to track manually. Misses follow-ups. Uses WhatsApp
+    and Excel. Loses warm leads because he called too late or forgot.
+  What to emphasise: AI calling agent (calls lead before he can), WhatsApp
+    automation (never forget a follow-up), mobile app (manage on phone).
+  Fear: Too expensive for one person, too complicated to learn.
+  Reassurance: Starter plan, 15-min mobile app learning curve, free trial.
+
+BROKER — TEAM (5–20 agents, established agency)
+  Pain: Leads from multiple portals in multiple tabs. No visibility on which
+    agent is following up. Duplicate calls to same lead. No reports.
+  What to emphasise: Portal aggregation, team dashboard, lead assignment,
+    agent performance reports, CP management.
+  Fear: Team won't adopt it, data migration complexity.
+  Reassurance: Managed onboarding (3–4 days), data migration handled,
+    mobile app simple, manager can track adoption.
+
+DEVELOPER / BUILDER SALES TEAM
+  Pain: Multiple projects, multiple agents, inventory management nightmare,
+    channel partner tracking, post-sales handover.
+  What to emphasise: Inventory grid, project microsite, CP management,
+    payment schedule, site visit workflow.
+  Fear: Integration with their existing ERP / tally, data security.
+  Reassurance: Tally integration (beta), robust data security, API access,
+    dedicated Enterprise onboarding.
+
+CHANNEL PARTNER (CP)
+  Pain: Developer shares leads but no tracking, commission disputes, no
+    visibility on deal status.
+  What to emphasise: CP portal (own login, own lead view), commission
+    tracking, deal attribution transparency.
+  Fear: Developer may not use it.
+  Response: "CP portal is also convincing for the developer to join — they
+    can track your performance too."
+
+================================================================================
+SECTION 8 — DEMO FLOW — WHAT NEHA PROMISES TO SHOW
+================================================================================
+
+In a 10–15 min demo (screen share, online):
+  1. Live portal integration — a lead arrives from 99acres in Antoc in real time
+  2. AI calling agent — place a test call from the demo account, hear it qualify
+     a mock lead, see the summary and recording in the lead profile afterwards
+  3. WhatsApp flow — show welcome message going out, then the Day 2 / Day 5
+     follow-up sequence configured in the automation settings
+  4. Pipeline drag — move a lead from "Interested" to "Site Visit Scheduled"
+     and see the automatic WhatsApp confirmation message fire
+  5. Mobile app — open on phone, show field agent view with lead cards and
+     one-tap call
+  6. Reports — show the agent leaderboard and source performance chart
+
+Best demo slots: 9am–11am or 5pm–7pm on weekdays. Saturdays morning possible.
+Demo link: Google Meet or Zoom — Antoc team sends it after booking.
+Demo person: Antoc sales team (human, not AI) — they can customise the demo to
+  the client's project type (residential, commercial, plots, etc.)
+
+================================================================================
+SECTION 9 — QUICK REFERENCE — TOP QUESTIONS AND ANSWERS
+================================================================================
+
+Q: Kitne portals ke saath integrate hota hai?
+A: 99acres, MagicBricks, Housing, NoBroker, Square Yards, PropTiger, Facebook,
+   Google, Instagram, IVR, website form — sab. 10+ sources.
+
+Q: WhatsApp number mera hi rehta hai ya Antoc ka hota hai?
+A: Aapka apna WhatsApp Business number. Antoc sirf backend use karta hai.
+
+Q: Kya main pehle se aaye leads import kar sakta hoon?
+A: Haan. Excel file bhejna hota hai Antoc team ko — woh import karte hain.
+   Purani history bhi aa sakti hai agar spreadsheet mein ho.
+
+Q: Kya AI agent record hoti hai call?
+A: Haan, har call record hoti hai aur transcript bhi milta hai. Lead profile
+   mein saved rehta hai.
+
+Q: Kya main without AI calling bhi use kar sakta hoon?
+A: Haan. Starter plan mein AI calling nahi hai. CRM, portals, WhatsApp — sab
+   available hai. AI calling Growth plan mein add-on hai.
+
+Q: Trial mein kya kya milta hai?
+A: 14 din, sab features, apni real leads ke saath. Koi credit card nahi.
+
+Q: Kya app mein Hindi mein use kar sakte hain?
+A: Dashboard abhi English mein hai. Mobile app mein Hindi option aa raha hai
+   (upcoming). AI agent already Hindi / Hinglish mein baat karta hai.
+
+Q: Support kaise milta hai?
+A: WhatsApp group (Antoc team directly), email. Monday–Saturday 9am–7pm IST.
+   Enterprise plan mein dedicated account manager.
+
+Q: Kya yeh Bangalore / Mumbai / Delhi ke brokers ke liye bhi kaam karta hai?
+A: Haan, poore India mein kaam karta hai. Portals national hain.
+
+Q: Inventory grid mein kitne units add kar sakte hain?
+A: No hard limit on Growth and Enterprise. Starter has a project cap.
+
+Q: Agar agent ka phone off hai toh lead kaun handle karta hai?
+A: AI calling agent pehle call karta hai aur qualify karta hai. Agar immediate
+   human needed hai, manager ko alert jaata hai. Lead kabhi miss nahi hoti.
+
+Q: Kya demo free hai?
+A: Haan, bilkul free. dus se padhrah minute, screen share, koi commitment nahi.
+
+================================================================================
+SECTION 10 — THINGS NEHA SHOULD NEVER SAY
+================================================================================
+
+Never:
+  - Quote a specific rupee price (never ₹ amount, ever)
+  - Say "Tally integration ready hai" (it's beta / Enterprise only)
+  - Promise a feature not in this document
+  - Read out bullet points from the KB aloud (synthesise into spoken Hinglish)
+  - Say "main ek AI hoon" unless directly asked; if asked, answer honestly
+  - Ask the lead for their name or phone (already known)
+  - Ask BHK / budget / property search questions (this is NOT a property buyer call)
+  - Use English filler sentences like "That's great!" or "Perfect!"
+  - Say "bilkul bahut shukriya" or "achha great"
+  - Dump the full feature list in one turn — one benefit per turn, then listen
