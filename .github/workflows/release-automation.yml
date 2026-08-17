@@ -1,9 +1,16 @@
+# Upstream Dograh uses Release Please for versioned GitHub releases.
+# On a self-host fork this breaks because:
+#   - manifest says 1.44.0 but no v1.44.0 release exists on the fork
+#   - hundreds of upstream commits are not conventional-commit format
+#
+# Disabled on push. Use "Deploy Dograh VM" to ship code to your VM instead.
+# To run Release Please manually (after fixing manifest + creating a baseline tag):
+#   Actions → Release Please → Run workflow
+
 name: Release Please
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -17,6 +24,4 @@ jobs:
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-          # Optional PAT (RELEASE_PLEASE_TOKEN) triggers downstream workflows on
-          # release publish. Falls back to GITHUB_TOKEN for forks without the secret.
           token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
