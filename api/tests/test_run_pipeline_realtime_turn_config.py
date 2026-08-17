@@ -44,6 +44,16 @@ def test_gemini_realtime_uses_local_vad_without_local_interruptions():
     assert strategies.stop[0].wait_for_transcript is False
 
 
+def test_gemini_realtime_telephony_uses_local_vad_with_interruptions():
+    strategies, vad_analyzer = _create_realtime_user_turn_config(
+        ServiceProviders.GOOGLE_REALTIME.value,
+        telephony_sample_rate=8000,
+    )
+
+    assert isinstance(vad_analyzer, SileroVADAnalyzer)
+    assert strategies.start[0]._enable_interruptions is True
+
+
 def test_gemini_vertex_realtime_uses_same_turn_config_as_gemini_live():
     strategies, vad_analyzer = _create_realtime_user_turn_config(
         ServiceProviders.GOOGLE_VERTEX_REALTIME.value

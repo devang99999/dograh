@@ -202,7 +202,11 @@ def _create_non_realtime_user_turn_stop_strategies(
     return [SpeechTimeoutUserTurnStopStrategy()]
 
 
-def _create_realtime_user_turn_config(provider: str):
+def _create_realtime_user_turn_config(
+    provider: str,
+    *,
+    telephony_sample_rate: int | None = None,
+):
     """Return user turn strategies and optional local VAD for realtime providers."""
 
     def external_provider_turn_config():
@@ -229,9 +233,11 @@ def _create_realtime_user_turn_config(provider: str):
         ServiceProviders.GOOGLE_REALTIME.value,
         ServiceProviders.GOOGLE_VERTEX_REALTIME.value,
     }:
-        # Let Gemini Live own barge-in via its server-side VAD, but keep local
-        # Silero VAD for early user-turn start and speaking-state tracking.
-        return local_vad_turn_config(enable_interruptions=False)
+        # WebRTC: Gemini server-side VAD owns barge-in; local Silero tracks turns.
+        # 8 kHz telephony: service_factory disables Gemini VAD so Silero drives
+        # activity_start/end — enable local interruptions for barge-in there.
+        telephony_local_vad = telephony_sample_rate == 8000
+        return local_vad_turn_config(enable_interruptions=telephony_local_vad)
 
     if provider in {
         ServiceProviders.OPENAI_REALTIME.value,
@@ -886,7 +892,8 @@ async def _run_pipeline_impl(
         # Realtime services still need user-turn tracking even when the model
         # itself owns speech generation and interruption behavior.
         user_turn_strategies, user_vad_analyzer = _create_realtime_user_turn_config(
-            user_config.realtime.provider
+            user_config.realtime.provider,
+            telephony_sample_rate=audio_config.transport_in_sample_rate,
         )
     else:
         # Some STT services emit their own turn boundaries, so the aggregator

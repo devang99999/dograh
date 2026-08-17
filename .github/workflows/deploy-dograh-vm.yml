@@ -1,0 +1,116 @@
+# Deploy Dograh API changes to your self-hosted VM (e.g. 34-14-214-236.sslip.io).
+#
+# One-time GitHub repo secrets (Settings → Secrets and variables → Actions):
+#   DOGRAH_VM_HOST          e.g. 34.14.214.236
+#   DOGRAH_VM_USER          e.g. root or ubuntu
+#   DOGRAH_VM_SSH_KEY       private key (full PEM, including BEGIN/END lines)
+#   DOGRAH_VM_INSTALL_DIR   e.g. /root/dograh  (directory with docker-compose.yaml)
+#
+# Usage:
+#   1. Push your branch (includes the VAD fix) to GitHub.
+#   2. Actions → "Deploy Dograh VM" → Run workflow.
+#   3. deploy_mode:
+#        patch   — hot-patch running api container (prebuilt :latest installs)
+#        rebuild — git pull + docker compose build api (build-mode installs)
+
+name: Deploy Dograh VM
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_mode:
+        description: "patch = hot-patch prebuilt container; rebuild = git pull + build api"
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - rebuild
+      git_ref:
+        description: "Branch or tag to deploy (rebuild mode only)"
+        required: false
+        default: main
+        type: string
+
+concurrency:
+  group: deploy-dograh-vm
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git_ref }}
+          submodules: recursive
+
+      - name: Validate secrets
+        run: |
+          test -n "${{ secrets.DOGRAH_VM_HOST }}" || (echo "Missing DOGRAH_VM_HOST secret" && exit 1)
+          test -n "${{ secrets.DOGRAH_VM_USER }}" || (echo "Missing DOGRAH_VM_USER secret" && exit 1)
+          test -n "${{ secrets.DOGRAH_VM_SSH_KEY }}" || (echo "Missing DOGRAH_VM_SSH_KEY secret" && exit 1)
+          test -n "${{ secrets.DOGRAH_VM_INSTALL_DIR }}" || (echo "Missing DOGRAH_VM_INSTALL_DIR secret" && exit 1)
+
+      - name: Upload patch files
+        if: inputs.deploy_mode == 'patch'
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.DOGRAH_VM_HOST }}
+          username: ${{ secrets.DOGRAH_VM_USER }}
+          key: ${{ secrets.DOGRAH_VM_SSH_KEY }}
+          source: "api/services/pipecat/service_factory.py,api/services/pipecat/run_pipeline.py"
+          target: "/tmp/dograh-vad-patch"
+          strip_components: 0
+
+      - name: Hot-patch api container
+        if: inputs.deploy_mode == 'patch'
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DOGRAH_VM_HOST }}
+          username: ${{ secrets.DOGRAH_VM_USER }}
+          key: ${{ secrets.DOGRAH_VM_SSH_KEY }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+            INSTALL_DIR="${{ secrets.DOGRAH_VM_INSTALL_DIR }}"
+            cd "$INSTALL_DIR"
+            CID=$(docker compose --profile remote ps -q api)
+            if [ -z "$CID" ]; then
+              echo "api container not running"
+              docker compose --profile remote ps
+              exit 1
+            fi
+            docker cp /tmp/dograh-vad-patch/api/services/pipecat/service_factory.py \
+              "$CID:/app/api/services/pipecat/service_factory.py"
+            docker cp /tmp/dograh-vad-patch/api/services/pipecat/run_pipeline.py \
+              "$CID:/app/api/services/pipecat/run_pipeline.py"
+            docker compose --profile remote restart api
+            sleep 10
+            docker compose --profile remote ps api
+            echo "Patch deploy complete."
+
+      - name: Rebuild api from git
+        if: inputs.deploy_mode == 'rebuild'
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DOGRAH_VM_HOST }}
+          username: ${{ secrets.DOGRAH_VM_USER }}
+          key: ${{ secrets.DOGRAH_VM_SSH_KEY }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+            INSTALL_DIR="${{ secrets.DOGRAH_VM_INSTALL_DIR }}"
+            REF="${{ inputs.git_ref }}"
+            cd "$INSTALL_DIR"
+            git fetch origin "$REF"
+            git checkout "$REF"
+            git pull origin "$REF" || true
+            git submodule update --init --recursive
+            docker compose --profile remote build api
+            docker compose --profile remote up -d api
+            sleep 10
+            docker compose --profile remote ps api
+            echo "Rebuild deploy complete."

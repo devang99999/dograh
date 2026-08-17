@@ -1180,6 +1180,7 @@ def create_realtime_llm_service(user_config, audio_config: "AudioConfig"):
         from api.services.pipecat.realtime.gemini_live import (
             DograhGeminiLiveLLMService,
         )
+        from pipecat.services.google.gemini_live.llm import GeminiVADParams
 
         # Gemini Live enables input/output audio transcription by default
         # in its _connect() method — no need to configure it explicitly.
@@ -1189,6 +1190,11 @@ def create_realtime_llm_service(user_config, audio_config: "AudioConfig"):
         }
         if language:
             settings_kwargs["language"] = language
+        if audio_config.transport_in_sample_rate == 8000:
+            # 8 kHz telephony: Gemini server-side VAD often misses short Hindi
+            # replies after the bot asks a question. Use local Silero activity
+            # windows instead (see run_pipeline telephony turn config).
+            settings_kwargs["vad"] = GeminiVADParams(disabled=True)
         return DograhGeminiLiveLLMService(
             api_key=api_key,
             settings=DograhGeminiLiveLLMService.Settings(**settings_kwargs),
@@ -1202,12 +1208,16 @@ def create_realtime_llm_service(user_config, audio_config: "AudioConfig"):
         location = getattr(realtime_config, "location", None) or "us-east4"
         credentials = getattr(realtime_config, "credentials", None)
 
+        from pipecat.services.google.gemini_live.llm import GeminiVADParams
+
         settings_kwargs = {
             "model": model,
             "voice": voice or "Charon",
         }
         if language:
             settings_kwargs["language"] = language
+        if audio_config.transport_in_sample_rate == 8000:
+            settings_kwargs["vad"] = GeminiVADParams(disabled=True)
         return DograhGeminiLiveVertexLLMService(
             credentials=credentials,
             project_id=project_id,
