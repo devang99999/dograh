@@ -15,8 +15,8 @@ jobs:
     steps:
       - uses: googleapis/release-please-action@v4
         with:
-          # Config files location
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
-          # Use PAT to trigger deployment workflow
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          # Optional PAT (RELEASE_PLEASE_TOKEN) triggers downstream workflows on
+          # release publish. Falls back to GITHUB_TOKEN for forks without the secret.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN || github.token }}
